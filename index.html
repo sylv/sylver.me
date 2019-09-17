@@ -1,0 +1,78 @@
+<!-- 
+    ⠀⠀⠀⠀⠀⠀⣤⣤
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿
+⠀⠀⣶⠀⠀⣀⣤⣶⣤⣉⣿⣿⣤⣀
+⠤⣤⣿⣤⣿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣀
+⠀⠛⠿⠀⠀⠀⠀⠉⣿⣿⣿⣿⣿⠉⠛⠿⣿⣤
+⠀⠀⠀⠀⠀⠀⠀⠀⠿⣿⣿⣿⠛⠀⠀⠀⣶⠿
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⣿⣿⣿⣿⣤⠀⣿⠿
+⠀⠀⠀⠀⠀⠀⠀⣶⣿⣿⣿⣿⣿⣿⣿⣿
+⠀⠀⠀⠀⠀⠀⠀⠿⣿⣿⣿⣿⣿⠿⠉⠉
+⠀⠀⠀⠀⠀⠀⠀⠉⣿⣿⣿⣿⠿
+⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⠉
+⠀⠀⠀⠀⠀⠀⠀⠀⣛⣿⣭⣶⣀
+⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠉⠛⣿
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⣿⣿
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣉⠀⣶⠿
+⠀⠀⠀⠀⠀⠀⠀⠀⣶⣿⠿
+⠀⠀⠀⠀⠀⠀⠀⠛⠿⠛
+
+would it be overkill for this to have been a react app
+ -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>boop</title>
+  </head>
+  <body>
+    <style>
+      .boop {
+        font-size: 0.85rem;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      @media (min-width: 1280px) {
+        .content {
+          max-width: 40vw;
+        }
+      }
+    </style>
+    <div class="boop">
+      <p class="content" id="content">
+        loading
+      </p>
+      <p>
+        <a href="https://atlasbot.xyz">atlas</a>, <a href="https://github.com/sylv">github</a> or
+        <a href="https://twitter.com/NotSylver">twitter</a>
+      </p>
+    </div>
+    <script>
+      const element = document.querySelector('#content')
+
+      fetch('https://www.reddit.com/r/Showerthoughts.json?raw_json=1&limit=5')
+        .then(r => r.json())
+        .then(body => {
+          const posts = body.data.children.filter(p => !p.data.pinned && !p.data.stickied)
+          const post = posts[Math.floor(Math.random() * posts.length)]
+          element.textContent = post.data.title
+        })
+        .catch(e => {
+          element.textContent = ':('
+        })
+    </script>
+  </body>
+</html>
