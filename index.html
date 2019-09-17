@@ -62,16 +62,25 @@ would it be overkill for this to have been a react app
     </div>
     <script>
       const element = document.querySelector('#content')
-
       fetch('https://www.reddit.com/r/Showerthoughts.json?raw_json=1&limit=5')
-        .then(r => r.json())
-        .then(body => {
+        // some browsers (brave) will block the request for some stupid reason
+        // and return an empty str, so w have to get the str and check if its empty to handle
+        // it properly.
+        .then(r => r.text())
+        .then(text => {
+          if (text === '') {
+            element.textContent = "Something blocked the request to reddit. But that's fine, this is pretty stupid anyway."
+            return
+          }
+
+          // looks like the request was fine :)
+          const body = JSON.parse(text)
           const posts = body.data.children.filter(p => !p.data.pinned && !p.data.stickied)
           const post = posts[Math.floor(Math.random() * posts.length)]
           element.textContent = post.data.title
         })
         .catch(e => {
-          element.textContent = ':('
+          element.textContent = ':( - ' + e.message
         })
     </script>
   </body>
