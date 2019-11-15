@@ -64,7 +64,7 @@ would it be overkill for this to have been a react app
       const element = document.querySelector('#content')
       fetch('https://www.reddit.com/r/Showerthoughts.json?raw_json=1&limit=5')
         // some browsers (brave) will block the request for some stupid reason
-        // and return an empty str, so w have to get the str and check if its empty to handle
+        // and return an empty str, so we have to get the str and check if its empty to handle
         // it properly.
         .then(r => r.text())
         .then(text => {
