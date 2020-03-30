@@ -1,39 +1,10 @@
-<!-- 
-    ⠀⠀⠀⠀⠀⠀⣤⣤
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿
-⠀⠀⣶⠀⠀⣀⣤⣶⣤⣉⣿⣿⣤⣀
-⠤⣤⣿⣤⣿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣀
-⠀⠛⠿⠀⠀⠀⠀⠉⣿⣿⣿⣿⣿⠉⠛⠿⣿⣤
-⠀⠀⠀⠀⠀⠀⠀⠀⠿⣿⣿⣿⠛⠀⠀⠀⣶⠿
-⠀⠀⠀⠀⠀⠀⠀⠀⣀⣿⣿⣿⣿⣤⠀⣿⠿
-⠀⠀⠀⠀⠀⠀⠀⣶⣿⣿⣿⣿⣿⣿⣿⣿
-⠀⠀⠀⠀⠀⠀⠀⠿⣿⣿⣿⣿⣿⠿⠉⠉
-⠀⠀⠀⠀⠀⠀⠀⠉⣿⣿⣿⣿⠿
-⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⠉
-⠀⠀⠀⠀⠀⠀⠀⠀⣛⣿⣭⣶⣀
-⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠉⠛⣿
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⣿⣿
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣉⠀⣶⠿
-⠀⠀⠀⠀⠀⠀⠀⠀⣶⣿⠿
-⠀⠀⠀⠀⠀⠀⠀⠛⠿⠛
-
-would it be overkill for this to have been a react app
- -->
+<!-- this should be a 3.8mb react app -->
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>boop</title>
-  </head>
-  <body>
+    <title>hi</title>
     <style>
-      .boop {
-        font-size: 0.85rem;
-        font-family: Arial, Helvetica, sans-serif;
-        text-align: center;
-      }
-
       body {
         display: flex;
         justify-content: center;
@@ -43,6 +14,22 @@ would it be overkill for this to have been a react app
         bottom: 0;
         left: 0;
         right: 0;
+        background: #101114;
+        color: #b5b0b0;
+      }
+
+      a {
+        color: pink;
+      }
+
+      a:active {
+        color: salmon;
+      }
+
+      .container {
+        font-size: 0.85rem;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
       }
 
       @media (min-width: 1280px) {
@@ -51,9 +38,11 @@ would it be overkill for this to have been a react app
         }
       }
     </style>
-    <div class="boop">
+  </head>
+  <body>
+    <div class="container">
       <p class="content" id="content">
-        loading
+        can you believe this shitty website needs javascript?
       </p>
       <p>
         <a href="https://atlasbot.xyz">atlas</a>, <a href="https://github.com/sylv">github</a> or
@@ -62,14 +51,16 @@ would it be overkill for this to have been a react app
     </div>
     <script>
       const element = document.querySelector('#content')
+      element.textContent = 'loading'
+
       fetch('https://www.reddit.com/r/Showerthoughts.json?raw_json=1&limit=5')
         // some browsers (brave) will block the request for some stupid reason
         // and return an empty str, so we have to get the str and check if its empty to handle
         // it properly.
-        .then(r => r.text())
+        .then(res => res.text())
         .then(text => {
-          if (text === '') {
-            element.textContent = "Something blocked the request to reddit. But that's fine, this is pretty stupid anyway."
+          if (!text) {
+            element.textContent = 'your browser blocked our request to reddit :('
             return
           }
 
@@ -77,10 +68,30 @@ would it be overkill for this to have been a react app
           const body = JSON.parse(text)
           const posts = body.data.children.filter(p => !p.data.pinned && !p.data.stickied)
           const post = posts[Math.floor(Math.random() * posts.length)]
-          element.textContent = post.data.title
+
+          // this could be done faster with regex but im procrastinating
+          let title = post.data.title.trim()
+          // make sure the title has a full stop
+          if (!title.endsWith('.')) title += '.'
+          // a e s t h e t i c
+          title = title.toLowerCase()
+          // spacing for the username href
+          title += ' '
+          // set it in the html
+          element.textContent = title
+
+          // link back to the source post to partially explain what the fuck is going on
+          // and partially to give the OP credit (even though let's be honest, most of the
+          // time its stolen in the first place)
+          const attr = document.createElement('a')
+          attr.setAttribute('href', post.data.url)
+          attr.setAttribute('target', '_blank')
+          attr.innerText = post.data.author.toLowerCase()
+          element.appendChild(attr)
         })
         .catch(e => {
-          element.textContent = ':( - ' + e.message
+          console.error(e)
+          element.textContent = 'something went wrong :('
         })
     </script>
   </body>
