@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background: #101114;
+  color: #a5a5a5;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2em;
+}
+
+a {
+  color: rgb(255, 185, 197);
+}
+
+a:active {
+  color: rgb(240, 149, 164);
+}
+
+.container {
+  font-size: 0.85rem;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+@media (min-width: 1280px) {
+  .content {
+    max-width: 40vw;
+  }
+}
